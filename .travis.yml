@@ -40,7 +40,7 @@ before_install:
 script:
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
           TEST_ARGS=WITH_COVERAGE=true;
-          COVER_ARGS=COVER=`pwd`/MOxUnit;
+          COVER_ARGS=COVER=`pwd`/MOdox;
 
           if [[  "$SHIPPABLE" == "true"  ]]; then
               OUTPUT_ARGS=COVER_XML_FILE=${SHIPPABLE_BUILD_DIR}/shippable/codecoverage/coverage.xml;
