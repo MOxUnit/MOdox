@@ -13,7 +13,7 @@ ADDPATH=orig_dir=pwd();cd('$(ROOTDIR)');addpath(pwd);cd(orig_dir);
 RMPATH=rmpath('$(ROOTDIR)');
 SAVEPATH=savepath();exit(0)
 
-COMPILE_EXTERNAL_EVALC=orig_dir=pwd();if(isempty(which('evalc'))),cd('$(ROOTDIR)/externals');mkoctfile('evalc.cc');addpath(pwd);savepath();else,fprintf('evalc is present\n');end;cd(orig_dir);
+COMPILE_EXTERNAL_EVALC=orig_dir=pwd();if(isempty(which('evalc'))),cd('$(CURDIR)/externals');mkoctfile('evalc.cc');addpath(pwd);savepath();else,fprintf('evalc is present\n');end;cd(orig_dir);
 
 
 INSTALL=$(ADDPATH);$(SAVEPATH);
