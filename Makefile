@@ -1,7 +1,7 @@
 .PHONY: help \
         install-matlab install-octave install \
         uninstall-matlab uninstall-octave uninstall \
-        test-matlab test-octave test
+        test-matlab test-octave test build-octave
 
 MATLAB?=matlab
 OCTAVE?=octave
@@ -16,7 +16,7 @@ SAVEPATH=savepath();exit(0)
 COMPILE_EXTERNAL_EVALC=orig_dir=pwd();if(isempty(which('evalc'))),cd('$(ROOTDIR)/externals');mkoctfile('evalc.cc');addpath(pwd);savepath();else,fprintf('OK\n');end;cd(orig_dir);
 
 
-INSTALL=$(ADDPATH);$(SAVEPATH);$(COMPILE_EXTERNAL_EVALC)
+INSTALL=$(ADDPATH);$(SAVEPATH);
 UNINSTALL=$(RMPATH);$(SAVEPATH)
 
 
@@ -33,6 +33,7 @@ help:
 	@echo ""
 	@echo "  install-matlab     to add MOxUnit to the Matlab search path"
 	@echo "  install-octave     to add MOxUnit to the GNU Octave search path"
+	@echo "  build-octave       to build evalc for Octave"
 	@echo "  uninstall-matlab   to remove MOxUnit from the Matlab search path"
 	@echo "  uninstall-octave   to remove MOxUnit from the GNU Octave search"
 	@echo "                     path"
@@ -71,7 +72,7 @@ install-matlab:
 		echo "matlab binary could not be found, skipping"; \
 	fi;
 
-install-octave:
+install-octave: build-octave
 	@if [ -n "$(OCTAVE_BIN)" ]; then \
 		$(OCTAVE_RUN) "$(INSTALL)"; \
 	else \
@@ -110,6 +111,10 @@ uninstall:
 	$(MAKE) uninstall-octave
 
 
+build-octave:
+	$(OCTAVE_RUN) "$(COMPILE_EXTERNAL_EVALC)";
+
+
 test-matlab:
 	@if [ -n "$(MATLAB_BIN)" ]; then \
 		$(MATLAB_RUN) "$(TEST)"; \
@@ -117,7 +122,7 @@ test-matlab:
 		echo "matlab binary could not be found, skipping"; \
 	fi;
 
-test-octave:
+test-octave: build-octave
 	@if [ -n "$(OCTAVE_BIN)" ]; then \
 		$(OCTAVE_RUN) "$(TEST)"; \
 	else \
