@@ -138,7 +138,6 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-
 [GNU Octave]: http://www.gnu.org/software/octave/
 [Matlab]: http://www.mathworks.com/products/matlab/
 [MOxUnit]: https://github.com/MOxUnit/MOxUnit
@@ -147,6 +146,5 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 [Travis-ci]: https://travis-ci.org
 [coveralls.io]: https://coveralls.io/
 [Shippable]: https://shippable.com
-
 
 
