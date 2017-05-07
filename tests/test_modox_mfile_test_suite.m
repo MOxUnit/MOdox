@@ -53,62 +53,70 @@ function test_multiple_mixed
         else
             index=2;
         end
-        
+
         lines_cell=passing_failing_cell{index};
         pos=ceil(rand()*numel(lines_cell));
-        
+
         all_lines_cell{k}=lines_cell{pos};
 
         expected_pass(k)=is_passing;
     end
-    
+
     helper_test_with(all_lines_cell,expected_pass);
-    
-    
+
+
 function helper_test_with(lines_cell,should_pass)
     for split_singleton=[false,true]
         helper_test_with_singleton(lines_cell,should_pass,split_singleton);
     end
-    
-    
+
+
 function helper_test_with_singleton(lines_cell,should_pass,split_singleton)
-    suite=MOdoxTestSuite();
-    ntests=numel(should_pass);    
-        
+    ntests=numel(should_pass);
+
     if split_singleton
         fns=write_mfiles(lines_cell);
     else
         empty_lines_cell=repmat({'  '},1,ntests);
-        
+
         % make tests with whitespace in between
         all_lines_cell=reshape([lines_cell; empty_lines_cell],1,[]);
         all_lines=cat(2,all_lines_cell{:});
         fns=write_mfiles({all_lines});
     end
-    
+
     cleaner=onCleanup(@()delete_files(fns));
-    
-    for k=1:numel(fns)
-        fn=fns{k};
-        suite=addFromFile(suite,fn);
+
+    for add_one_by_one=[false,true]
+        suite=MOdoxTestSuite();
+
+        if add_one_by_one
+            for k=1:numel(fns)
+                fn=fns{k};
+                suite=addFromFile(suite,fn);
+            end
+        else
+            parent_dir=fileparts(fns{1});
+            suite=addFromDirectory(suite,parent_dir,'.*\.m');
+        end
+
+        assert(isa(suite,'MOxUnitTestSuite'));
+        assertEqual(countTestCases(suite),ntests);
+
+        report=MOxUnitTestReport(0,1,'foo');
+        report=run(suite,report);
+
+        assertEqual(wasSuccessful(report),all(should_pass));
+
+        ntests=countTestOutcomes(report);
+        assertEqual(ntests,numel(should_pass));
+
+        for k=1:ntests
+            outcome=getTestOutcome(report,k);
+            assertEqual(isSuccess(outcome),should_pass(k));
+        end
     end
-    
-    assert(isa(suite,'MOxUnitTestSuite'));
-    assertEqual(countTestCases(suite),ntests);
-    
-    report=MOxUnitTestReport(0,1,'foo');
-    report=run(suite,report);
-    
-    assertEqual(wasSuccessful(report),all(should_pass));
-    
-    ntests=countTestOutcomes(report);
-    assertEqual(ntests,numel(should_pass));
-    
-    for k=1:ntests
-        outcome=getTestOutcome(report,k);
-        assertEqual(isSuccess(outcome),should_pass(k));
-    end
-    
+
 function delete_files(fns)
     for k=1:numel(fns)
         fn=fns{k};
@@ -116,19 +124,21 @@ function delete_files(fns)
             delete(fn);
         end
     end
-    
-    
+
+
 function fns=write_mfiles(lines_cell)
     ntests=numel(lines_cell);
     fns=cell(ntests,1);
-    
+
     for k=1:ntests
+        prefix=sprintf('t%03d',k);
         suffix=char(ceil(rand(1,10)*26+64));
-        fn=sprintf('%s%s.m',tempname(),suffix);
+        [pth,nm]=fileparts(tempname());
+        fn=fullfile(pth,sprintf('%s%s%s.m',prefix,nm,suffix));
         fns{k}=fn;
         fid=fopen(fn,'w');
         closer=onCleanup(@()fclose(fid));
-        
+
         addprefix=@(xs)cellfun(@(x) ['%   ' x],xs,'UniformOutput',false);
         [unused,nm]=fileparts(fn);
         prefix={sprintf('function %s',nm), '% comment', '% Examples:'};
