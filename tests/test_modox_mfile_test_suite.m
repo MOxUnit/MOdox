@@ -13,37 +13,37 @@ function passing=get_passing()
              {'2+[3;4]',output(' 5'),output(' 6')},...
              {'% comment','2',output('2')},...
              };
-         
+
 function failing=get_failing()
     failing={{'disp(2)',output('3')},...
             {'3+4',output(' 8')},...
-            {'[3;4]',output(' [3 4]')},... 
+            {'[3;4]',output(' [3 4]')},...
             {'2+3',output( ' foo')},...
             {'3+4',output('%> 7')},...
             };          % separator
-    
-        
-function as_output=output(s)    
+
+
+function as_output=output(s)
     parser=MOdoxDocTestParser();
     prefix=getOutputPrefix(parser);
-    
+
     as_output=sprintf('%s%s',prefix,s);
-    
+
 function test_modox_mfile_test_suite_single_passing()
     helper_test_single_with_cell(get_passing(),true);
-         
+
 function test_modox_mfile_test_suite_single_failing
     helper_test_single_with_cell(get_failing(),false)
-    
+
 function helper_test_single_with_cell(cell_lines,expected_pass)
     for k=1:numel(cell_lines)
         helper_test_with(cell_lines(k),expected_pass);
     end
-    
+
 function test_multiple_mixed
     passing_failing_cell={get_passing(),get_failing};
     ntests=ceil(rand()*5+10);
-    
+
     expected_pass=false(ntests,1);
     all_lines_cell=cell(1,ntests);
     for k=1:ntests
@@ -150,4 +150,3 @@ function fns=write_mfiles(lines_cell)
         fprintf(fid,'%s\n',all_lines{:});
         clear closer;
     end
-    

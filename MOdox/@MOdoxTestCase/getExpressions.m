@@ -1,5 +1,5 @@
 function expr=getExpressions(obj)
-% Return expressions part of this instance 
+% Return expressions part of this instance
 %
 % exprs=getExpressions(obj)
 %

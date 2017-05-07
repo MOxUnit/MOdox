@@ -20,24 +20,24 @@ function suite=addFromFile(suite,fn,parser)
 
     expressions=parseMFile(parser,fn);
     n_expressions=numel(expressions);
-    
+
     current_evaluable=cellfun(@(x)isEvaluable(x),expressions);
     next_evaluable=[current_evaluable(2:end); false];
-    
+
     test_start=[];
-    for k=1:n_expressions        
+    for k=1:n_expressions
         if current_evaluable(k)
             if isempty(test_start)
                 test_start=k;
             end
-            
+
             if ~next_evaluable(k)
                 test_end=k;
-                
+
                 case_expressions=expressions(test_start:test_end);
                 last_expression=case_expressions{end};
-                
-                
+
+
                 location=getLocation(last_expression);
                 test_case=MOdoxTestCase(fn,location,case_expressions);
                 suite=addTest(suite,test_case);
@@ -45,5 +45,4 @@ function suite=addFromFile(suite,fn,parser)
             end
         end
     end
-    
- 
+

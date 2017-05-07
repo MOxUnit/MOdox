@@ -9,5 +9,5 @@ function s=str(obj)
 % Output:
 %   s               string representation of obj.
 %
-    
+
     s=str(getLocation(obj));

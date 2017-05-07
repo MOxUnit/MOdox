@@ -4,10 +4,10 @@ function test_suite = test_modox_expressions
     catch % no problem; early Matlab versions can use initTestSuite fine
     end
     initTestSuite;
-    
+
 function s=randstr()
     s=char(ceil(rand(1,10)*24+64));
-    
+
 function test_modox_expressions_basics()
     class_=@MOdoxTestCaseExpression;
 
@@ -27,16 +27,16 @@ function test_modox_expressions_basics()
     assertEqual(getOutputPrefix(instance_pf),prefix);
     assertEqual(getLocation(instance_pf),location);
     assertEqual(getOutput(instance_pf),output);
-    
+
     assertTrue(isEvaluable(instance));
-    
-function test_separator_expression_basics()    
+
+function test_separator_expression_basics()
     class_=@MOdoxSeparatorExpression;
     instance=class_();
-    
+
     assert(ischar(str(instance)));
     assertFalse(isEvaluable(instance));
-    
+
 function [instance,location,lines,output]=instantiate_class(constructor,...
                                                             prefix)
     filename=randstr();
@@ -45,14 +45,14 @@ function [instance,location,lines,output]=instantiate_class(constructor,...
     location=MOdoxMFileLocation(filename,linenumber);
     lines=random_cellstr();
     output=random_cellstr();
-    
+
     instance=constructor(location,lines,prefix,output);
-    
-function lines=random_cellstr()    
+
+function lines=random_cellstr()
     line_count=ceil(rand()*10);
     lines=arrayfun(@(unused)randstr(),1:line_count,...
                         'UniformOutput',false);
-    
+
 function test_modox_expressions_exceptions()
     class_=@MOdoxTestCaseExpression;
     aet_class=@(varargin)assertExceptionThrown(@()...
@@ -87,7 +87,6 @@ function test_modox_expressions_exceptions()
     % wrong lines / output argument
     aet_class(location,{['foo';'bar']},prefix,output);
     aet_class(location,lines,prefix,{['foo';'bar']});
-    
-    
-    
-        
+
+
+

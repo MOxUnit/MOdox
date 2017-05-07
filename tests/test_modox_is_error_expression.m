@@ -12,12 +12,12 @@ function test_modox_is_error_expression_basics()
     aeq(true,'error(''foo'')');
     aeq(true,'    error     (    ''foo'')');
     aeq(true,sprintf('  \t  error \t    (    3   )\n'));
-    
+
     aeq(false,'    abs(2)');
     aeq(false,'    fprintf(2,''error'')');
     aeq(false,'    % error(''foo'')');
-    
-function test_modox_is_error_expression_exceptions()    
+
+function test_modox_is_error_expression_exceptions()
     aet=@(varargin)assertExceptionThrown(@()...
                     modox_is_error_expression(varargin{:}),'');
     aet(struct)

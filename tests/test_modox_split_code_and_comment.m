@@ -14,7 +14,7 @@ function test_modox_split_code_and_comment_basics
                ' {2 ''%'' 3} % com ment',' {2 ''%'' 3} ','% com ment';...
                'a=([1]'') % comment','a=([1]'') ','% comment'
                };
-           
+
     n_cases=size(cases,1);
     for k=1:n_cases
         line=cases{k,1};
@@ -22,11 +22,11 @@ function test_modox_split_code_and_comment_basics
         assertEqual(code,cases{k,2});
         assertEqual(comment,cases{k,3});
     end
-    
-    
+
+
 function test_modox_split_code_and_comment_exceptions
     aet=@(varargin)assertExceptionThrown(@()...
                             modox_split_code_and_comment(varargin{:}),'');
     aet([]);
     aet({'2'});
-    
+

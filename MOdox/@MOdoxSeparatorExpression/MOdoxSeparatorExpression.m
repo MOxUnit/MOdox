@@ -1,6 +1,6 @@
 function obj=MOdoxSeparatorExpression()
 %  Base expression class
 
-    s=struct();    
+    s=struct();
     obj=class(s,'MOdoxSeparatorExpression',MOdoxExpression());
-    
+
