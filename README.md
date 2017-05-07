@@ -11,6 +11,11 @@ MOdox is documentation test ("doctest") framework for Matlab and GNU Octave.
 - Is distributed under the MIT license, a permissive free software license.
 
 
+### Dependencies
+- Working installation of [MOxUnit]. 
+- The ``evalc`` function. This functon is generally available in Matlab. Older versions of Octave without ``evalc`` can compile the ``evalc.cc`` file from in the "externals" directory. This can be done by running ``make build-octave`` from the shell, or in Octave by running ``mkoctfile('evalc.cc')`` in the ``externals`` directory and then adding that directory to the search path. The ``evalc.cc`` implementation is Copyright 2015 Oliver Heimlich, distributed under the GPL v3+ license.
+
+
 ### Installation
 
 - Using the shell (requires a Unix-like operating system such as GNU/Linux or Apple OSX):
@@ -38,7 +43,7 @@ MOdox is documentation test ("doctest") framework for Matlab and GNU Octave.
 ### Writing documentation tests
 Documentation tests can be defined in the help section of a Matlab / Octave .m file. The help section of a function "foo" is the text shown when running "help foo".
 
-Documentation tests must be placed in a section called "Examples". Subsequent lines, if indented (by being prefixed by more whitespace than the "Examples" line), are used to construct documentation tests. The examples section ends when the indentation is back to the original level.
+Documentation tests must be placed in an example section starting with a header that consists of exactly one of the strings "Example", "Examples", "Example:" or "Examples:" (optionally surrounded by whitespace). Subsequent lines, if indented (by being prefixed by more whitespace than the example header), are used to construct documentation tests. The examples section ends when the indentation is back to the original level.
 Multiple test sections can be defined by separating them by whitespace. Each tests contains one or more Matlab epxressions, and one or more lines containing expected output. Expected output is prefixed by "%|| 2"; this ensures that documentation tests can be run by using copy-pasting code fragments. If a potential test section does not have expected output, then it is ignored (and not used to construct a test).
 
 In the following example, a file "foo.m" defines two documentation tests:
@@ -64,7 +69,8 @@ In the following example, a file "foo.m" defines two documentation tests:
         %   % only.
         %   % The following expression raises an error because the 'b' variable
         %   % is not defined (and does not carry over from the previous test).
-        %   % Because the expected output
+        %   % Because the expected output indicates an error as well, 
+        %   % the test passes
         %   disp(b)
         %   %|| error('Some error')
         %
@@ -99,12 +105,7 @@ MOdox can be used with the [Travis-ci] and [Shippable] services for continuous i
 
 ### Limitations
 - Expressions with the "for" keyword are not supported in Octave because ``evalc`` does not seem to support it
-
-
-### Dependencies
-- Working installation of [MOxUnit]
-- The ``evalc`` function. This functon is generally available in Matlab. Older versions of Octave without ``evalc`` can compile the ``evalc.cc`` file from in the "externals" directory. This function is Copyright 2015 Oliver Heimlich, distributed under the GPL v3+ license.
-
+- It is possible to indicate that an expression throws an exception, but not *which* exception.
 
 ### Acknowledgements
 - Thanks to Oliver Heimlich for the evalc implementation for GNU Octave.

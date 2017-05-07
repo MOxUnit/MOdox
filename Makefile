@@ -107,6 +107,7 @@ install-matlab:
 
 install-octave: build-octave
 	@if [ -n "$(OCTAVE_BIN)" ]; then \
+		echo "installing octave"; \
 		$(OCTAVE_RUN) "$(INSTALL)"; \
 	else \
 		echo "octave binary could not be found, skipping"; \
