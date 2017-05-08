@@ -9,7 +9,7 @@ OCTAVE?=octave
 TESTDIR=$(CURDIR)/tests
 ROOTDIR=$(CURDIR)/MOdox
 
-ADDPATH=orig_dir=pwd();cd('$(ROOTDIR)');addpath(pwd);cd(orig_dir);
+ADDPATH=orig_dir=pwd();cd('$(ROOTDIR)');addpath(pwd);fprintf('Adding to path: %s\n',pwd);cd(orig_dir);
 RMPATH=rmpath('$(ROOTDIR)');
 SAVEPATH=savepath();exit(0)
 
@@ -107,7 +107,7 @@ install-matlab:
 
 install-octave: build-octave
 	@if [ -n "$(OCTAVE_BIN)" ]; then \
-		echo "installing octave"; \
+		echo "Installing for Octave"; \
 		$(OCTAVE_RUN) "$(INSTALL)"; \
 	else \
 		echo "octave binary could not be found, skipping"; \
