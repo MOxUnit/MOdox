@@ -9,11 +9,11 @@ OCTAVE?=octave
 TESTDIR=$(CURDIR)/tests
 ROOTDIR=$(CURDIR)/MOdox
 
-ADDPATH=orig_dir=pwd();cd('$(ROOTDIR)');addpath(pwd);fprintf('Adding to path: %s\n',pwd);cd(orig_dir);
+ADDPATH=orig_dir=pwd();cd('$(ROOTDIR)');addpath(pwd);fprintf('Adding to path: %s\n',pwd);cd(orig_dir);fprintf('path check:\n');disp(which('modox_runtests'));
 RMPATH=rmpath('$(ROOTDIR)');
 SAVEPATH=savepath();exit(0)
 
-COMPILE_EXTERNAL_EVALC=orig_dir=pwd();if(isempty(which('evalc'))),cd('$(CURDIR)/externals');mkoctfile('evalc.cc');addpath(pwd);savepath();else,fprintf('evalc is present\n');end;cd(orig_dir);
+COMPILE_EXTERNAL_EVALC=orig_dir=pwd();if(isempty(which('evalc'))),cd('$(CURDIR)/externals');mkoctfile('evalc.cc');fprintf('Compile finished\n');addpath(pwd);savepath();else,fprintf('evalc is present\n');end;cd(orig_dir);
 
 
 INSTALL=$(ADDPATH);$(SAVEPATH);
