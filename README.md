@@ -44,7 +44,7 @@ MOdox is documentation test ("doctest") framework for Matlab and GNU Octave.
 Documentation tests can be defined in the help section of a Matlab / Octave .m file. The help section of a function "foo" is the text shown when running "help foo".
 
 Documentation tests must be placed in an example section starting with a header that consists of exactly one of the strings "Example", "Examples", "Example:" or "Examples:" (optionally surrounded by whitespace). Subsequent lines, if indented (by being prefixed by more whitespace than the example header), are used to construct documentation tests. The examples section ends when the indentation is back to the original level.
-Multiple test sections can be defined by separating them by whitespace. Each tests contains one or more Matlab epxressions, and one or more lines containing expected output. Expected output is prefixed by "%|| 2"; this ensures that documentation tests can be run by using copy-pasting code fragments. If a potential test section does not have expected output, then it is ignored (and not used to construct a test).
+Multiple test sections can be defined by separating them by whitespace. Each tests contains one or more Matlab epxressions, and one or more lines containing expected output. Expected output is prefixed by "%||"; this ensures that documentation tests can be run by using copy-pasting code fragments. If a potential test section does not have expected output, then it is ignored (and not used to construct a test).
 
 In the following example, a file "foo.m" defines two documentation tests:
 
@@ -59,14 +59,16 @@ In the following example, a file "foo.m" defines two documentation tests:
         %   % Expected output is prefixed by '%||' as in the following line:
         %   %|| 2
         %   %
-        %   % The test continues because no interruption through whitespace;
-        %   % thus the 'a' variable can be accessed.
+        %   % The test continues because no interruption through whitespace,
+        %   % as the previous line used a '%' comment character;
+        %   % thus the 'a' variable is still in the namespace and can be 
+        %   % accessed.
         %   b=3+a;
         %   disp(a+[3 4])
         %   %|| [5 6]
         %
         %   % A new test starts here because the previous line was white-space
-        %   % only.
+        %   % only. Thus the 'a' and 'b' variables are not present here anymore.
         %   % The following expression raises an error because the 'b' variable
         %   % is not defined (and does not carry over from the previous test).
         %   % Because the expected output indicates an error as well, 
@@ -74,9 +76,10 @@ In the following example, a file "foo.m" defines two documentation tests:
         %   disp(b)
         %   %|| error('Some error')
         %
-        %   % A set of expressions with no expected output is ignored.
+        %   % A set of expressions is ignored if there is no expected output 
+        %   % (that is, no lines starting with '%||').
         %   % Thus, the following expression is not part of any test,
-        %   % and therefore does not raise an error
+        %   % and therefore does not raise an error.
         %   error('this is never executed)
         %
         %
