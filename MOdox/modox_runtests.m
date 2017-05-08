@@ -47,7 +47,9 @@ function all_passed=modox_runtests(varargin)
     report=MOxUnitTestReport(verbosity);
     report=run(suite,report);
 
-    disp(report);
+    if opt.verbosity>0
+        disp(report);
+    end
 
     all_passed=wasSuccessful(report);
 

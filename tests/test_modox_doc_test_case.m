@@ -183,6 +183,8 @@ function test_test_cases
     end
 
 function test_modox_main
+    is_octave=moxunit_util_platform_is_octave();
+
     for n_pass=0:2
         for n_fail=0:2
             if n_pass==0 && n_fail==0
@@ -200,7 +202,13 @@ function test_modox_main
 
         expected_result=n_fail==0;
 
-        more_args={};
+        if is_octave
+            % suppress output because evalc does not assign the output
+            % as expected
+            more_args={'-quiet','-quiet'};
+        else
+            more_args={};
+        end
         % try with multiple files
         result=modox_runtests_wrapper(fns{:},more_args{:});
         assertEqual(result,expected_result);
@@ -216,17 +224,25 @@ function test_modox_main
         [result,output]=modox_runtests_wrapper(more_args{:},...
                                         '-verbose','-recursive');
         assertEqual(result,expected_result);
-        assert_contains_if_else(result,output,'OK','FAILED');
+        if ~is_octave
+            % skip the test for Octave because there was no output
+            assert_contains_if_else(result,output,'OK','FAILED');
+        end
 
         clear pwd_resetter;
         clear file_cleaner;
     end
 
 function [result,output]=modox_runtests_wrapper(varargin)
-    arg_str=sprintf('''%s'',',varargin{:});
-    to_eval=sprintf('result=modox_runtests(%s);',arg_str(1:(end-1)));
+    if moxunit_util_platform_is_octave()
+        result=modox_runtests(varargin{:});
+        output='* Not supported output *';
+    else
+        arg_str=sprintf('''%s'',',varargin{:});
+        to_eval=sprintf('result=modox_runtests(%s);',arg_str(1:(end-1)));
+        output=evalc(to_eval);
+    end
 
-    output=evalc(to_eval);
 
 function assert_contains_if_else(flag,needle,if_true,if_false)
     assertEqual(~flag,isempty(findstr(needle,if_true)));
