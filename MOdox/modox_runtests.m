@@ -32,8 +32,6 @@ function all_passed=modox_runtests(varargin)
     filenames=opt.filenames;
     verbosity=opt.verbosity;
 
-
-
     suite=MOdoxTestSuite();
 
     n_files=numel(filenames);
@@ -48,6 +46,9 @@ function all_passed=modox_runtests(varargin)
 
     report=MOxUnitTestReport(verbosity);
     report=run(suite,report);
+
+    disp(report);
+
     all_passed=wasSuccessful(report);
 
 

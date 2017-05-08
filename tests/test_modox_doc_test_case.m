@@ -198,28 +198,41 @@ function test_modox_main
 
         file_cleaner=onCleanup(@()delete_files_in_dir(temp_dir,fns));
 
-        more_args={'-quiet','-quiet'};
-
         expected_result=n_fail==0;
 
+        more_args={};
         % try with multiple files
-        result=modox_runtests(fns{:},more_args{:});
+        result=modox_runtests_wrapper(fns{:},more_args{:});
         assertEqual(result,expected_result);
 
         % try with directory
-        result=modox_runtests(temp_dir,more_args{:});
+        result=modox_runtests_wrapper(temp_dir,more_args{:});
         assertEqual(result,expected_result);
 
         % try with running directory from the directory
         cur_pwd=pwd();
         pwd_resetter=onCleanup(@()cd(cur_pwd));
         cd(temp_dir);
-        result=modox_runtests(more_args{:},'-verbose','-recursive');
+        [result,output]=modox_runtests_wrapper(more_args{:},...
+                                        '-verbose','-recursive');
         assertEqual(result,expected_result);
+        assert_contains_if_else(result,output,'OK','FAILED');
 
         clear pwd_resetter;
         clear file_cleaner;
     end
+
+function [result,output]=modox_runtests_wrapper(varargin)
+    arg_str=sprintf('''%s'',',varargin{:});
+    to_eval=sprintf('result=modox_runtests(%s);',arg_str(1:(end-1)));
+
+    output=evalc(to_eval);
+
+function assert_contains_if_else(flag,needle,if_true,if_false)
+    assertEqual(~flag,isempty(findstr(needle,if_true)));
+    assertEqual(flag,isempty(findstr(needle,if_false)));
+
+
 
 function fns=write_test_cases(dir_name,case_specs,fn_count)
     if ~isdir(dir_name)
