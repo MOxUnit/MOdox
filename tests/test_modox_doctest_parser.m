@@ -29,6 +29,36 @@ function test_get_output_prefix()
     prefix=getOutputPrefix(parser);
     assert(ischar(prefix));
 
+function test_no_help_lines()
+    % lines with no help should return empty cell
+    lines={'function foo',...
+            '%% doc',...
+            'bar();'};
+
+    parser=MOdoxDocTestParser();
+    doc_lines=getDocTestLines(parser,lines);
+    assert(iscellstr(doc_lines));
+    assert(isempty(doc_lines));
+
+
+
+    fn=[tempname() '.m'];
+    cleaner=onCleanup(@()delete(fn));
+    fid=fopen(fn,'w');
+    closer=onCleanup(@()fclose(fid));
+    fprintf(fid,'%s\n',lines{:});
+    clear closer;
+
+    expressions=parseMFile(parser,fn);
+    assert(iscell(expressions));
+    assert(isempty(expressions));
+
+
+
+
+
+
+
 function test_simple_expressions()
 
     parser=MOdoxDocTestParser();

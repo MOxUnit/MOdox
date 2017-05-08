@@ -203,17 +203,18 @@ function test_modox_main
         expected_result=n_fail==0;
 
         % try with multiple files
-        result=modox(fns{:},more_args{:});
+        result=modox_runtests(fns{:},more_args{:});
         assertEqual(result,expected_result);
 
         % try with directory
-        result=modox(temp_dir,more_args{:});
+        result=modox_runtests(temp_dir,more_args{:});
         assertEqual(result,expected_result);
+
         % try with running directory from the directory
         cur_pwd=pwd();
         pwd_resetter=onCleanup(@()cd(cur_pwd));
         cd(temp_dir);
-        result=modox(more_args{:},'-verbose','-recursive');
+        result=modox_runtests(more_args{:},'-verbose','-recursive');
         assertEqual(result,expected_result);
 
         clear pwd_resetter;
@@ -278,7 +279,7 @@ function delete_files_in_dir(dir_name,fns)
 
 function test_modox_main_exceptions
     aet=@(varargin)assertExceptionThrown(@()...
-                        modox(varargin{:}),'');
+                        modox_runtests(varargin{:}),'');
 
     aet(tempname());
     aet('-foo');

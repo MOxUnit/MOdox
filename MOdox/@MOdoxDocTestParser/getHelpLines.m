@@ -58,7 +58,7 @@ function help_lines=getHelpLines(obj,content)
     if help_section_has_started
         help_lines=clean_lines(1:help_end);
     else
-        help_lines='';
+        help_lines={};
     end
 
 

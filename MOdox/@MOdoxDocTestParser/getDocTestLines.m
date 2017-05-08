@@ -217,17 +217,3 @@ function check_inputs(obj,lines)
         error('Second input must be cell string');
     end
 
-    non_space_whitespace_pattern=sprintf('[\r\n\f\v]');
-
-    non_empty_pos=find(~cellfun(@isempty,lines));
-    has_match=~cellfun(@isempty,...
-                regexp(lines(non_empty_pos),...
-                non_space_whitespace_pattern,'once'));
-
-%     if any(has_match)
-%         pos=find(has_match,1,'first');
-%         error('Line %d contains non-space whitespace character',...
-%                     non_empty_pos(pos));
-%
-%     end
-
