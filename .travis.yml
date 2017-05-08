@@ -36,6 +36,8 @@ before_install:
     - make -C MOcov install
     # cd back to original directory 
     - cd MOdox
+    # show .octaverc
+    - cat ~/.octaverc
 
 script:
     - if [[  "$WITH_COVERAGE" == "true" ]]; then
