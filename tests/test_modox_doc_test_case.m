@@ -182,6 +182,25 @@ function test_test_cases
         end
     end
 
+
+function test_unparseable_expression_case()
+    reason=randstr();
+    name=randstr();
+    location=randloc();
+
+    exprs={MOdoxUnparseableExpression(location,reason)};
+    test_case=MOdoxTestCase(name,location,exprs);
+    assertEqual(getName(test_case),name);
+    assertEqual(getLocation(test_case),location);
+    assertEqual(getExpressions(test_case),exprs);
+
+    verbosity=0;
+    report=MOxUnitTestReport(verbosity);
+    report=run(test_case,report);
+
+    assertEqual(1,countTestOutcomes(report));
+    assertFalse(wasSuccessful(report));
+
 function test_modox_main
     is_octave=moxunit_util_platform_is_octave();
 
@@ -232,6 +251,9 @@ function test_modox_main
         clear pwd_resetter;
         clear file_cleaner;
     end
+
+
+
 
 function [result,output]=modox_runtests_wrapper(varargin)
     if moxunit_util_platform_is_octave()

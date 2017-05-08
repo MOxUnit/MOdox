@@ -62,6 +62,14 @@ function DXD__outcome_args=run_with(DXD__expressions)
     for DXD__i=1:DXD__n_expressions
         DXD__expression=DXD__expressions{DXD__i};
 
+        if ~isValid(DXD__expression)
+            % unparseable expression
+            DXD__reason=getReason(DXD__expression);
+            DXD__outcome_args=DXD__build_error_struct(DXD__reason,...
+                                            DXD__expression);
+            return;
+        end
+
         if isEvaluable(DXD__expression)
             DXD__last_error=false;
             DXD__last_output=[];
@@ -79,8 +87,7 @@ function DXD__outcome_args=run_with(DXD__expressions)
                     && DXD__moxunit_isa_test_skipped_exception(...
                                                     DXD__last_error)
 
-                % Skipped test exxception was raised
-                % or a failed test
+                % Skipped test exception was raised
                 DXD__reason=DXD__last_error.message;
                 DXD__outcome_args={@MOxUnitSkippedTestOutcome,...
                                     DXD__build_error_struct(DXD__reason,...

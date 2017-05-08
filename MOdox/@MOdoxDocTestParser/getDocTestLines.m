@@ -17,6 +17,8 @@ function [doctest_lines,doctest_idxs]=getDocTestLines(obj,doctest_lines)
 %                           with indentation removed. If no documentation
 %                           is found, then the output is an empty cell
 %                           array.
+%                           If a parsing error occured, then this is a
+%                           string with the error message.
 %   doctest_idxs            the indices of the lines with doctests, i.e.
 %                           lines{doctest_idxs}==doctest_lines.
 %
@@ -40,12 +42,14 @@ function [doctest_lines,doctest_idxs]=getDocTestLines(obj,doctest_lines)
     check_inputs(obj,doctest_lines)
     doctest_lines=set_empty_lines(doctest_lines);
 
+    % default output
+    doctest_idxs=[];
+
     % see where the 'Examples' section starts
     header_idx=find_header(doctest_lines);
 
     % no Examples section
     if isempty(header_idx)
-        doctest_idxs=[];
         doctest_lines=cell(0);
         return;
     end
@@ -56,17 +60,27 @@ function [doctest_lines,doctest_idxs]=getDocTestLines(obj,doctest_lines)
     body_indent=get_indent(doctest_lines,start_body_idx);
 
     if header_indent>=body_indent
-        error(['Doctest body starting at line %d does not seem to '...
-                    'be properly indented'],start_body_idx);
+        doctest_lines=sprintf(['Parse error: '...
+                                    'doctest body starting at line %d '...
+                                    'does not seem to '...
+                                    'be properly indented'],...
+                                    start_body_idx);
+        return;
     end
 
     post_body_idx=get_body_end(doctest_lines,start_body_idx,body_indent);
     post_body_indent=get_indent(doctest_lines,post_body_idx);
 
     if ~isempty(post_body_indent) && post_body_indent>header_indent
-        error(['Indent after doctest body at line %d is greater than '...
-                'the indent of the header (''%s'') at line %d'],...
-                post_body_indent,doctest_lines{header_idx},header_idx);
+        doctest_lines=sprintf(['Parse error: '...
+                                'Indent after doctest body at '...
+                                'line %d is greater than '...
+                                'the indent of the header (''%s'') '...
+                                'at line %d'],...
+                                header_idx+post_body_indent,...
+                                doctest_lines{header_idx},...
+                                header_idx);
+        return;
     end
 
     % remove indent from each line

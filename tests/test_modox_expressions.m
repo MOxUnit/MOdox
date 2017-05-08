@@ -29,6 +29,7 @@ function test_modox_expressions_basics()
     assertEqual(getOutput(instance_pf),output);
 
     assertTrue(isEvaluable(instance));
+    assertTrue(isValid(instance));
 
 function test_separator_expression_basics()
     class_=@MOdoxSeparatorExpression;
@@ -36,6 +37,31 @@ function test_separator_expression_basics()
 
     assert(ischar(str(instance)));
     assertFalse(isEvaluable(instance));
+    assertTrue(isValid(instance));
+
+
+function test_unparseble_expresion_basics()
+    class_=@MOdoxUnparseableExpression;
+
+    reason=randstr();
+    filename=randstr();
+    linenumber=ceil(rand()*100);
+    location=MOdoxMFileLocation(filename,linenumber);
+
+    instance=class_(location,reason);
+
+    assertEqual(getLocation(instance),location);
+    assertEqual(getReason(instance),reason);
+
+    assert(ischar(str(instance)));
+    assertTrue(isEvaluable(instance));
+    assertFalse(isValid(instance));
+
+    aet=@(varargin)assertExceptionThrown(@()class_(varargin{:}),'');
+    aet(reason,location);
+    aet(struct,reason);
+    aet(location,3);
+
 
 function [instance,location,lines,output]=instantiate_class(constructor,...
                                                             prefix)
