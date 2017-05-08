@@ -40,27 +40,27 @@ function test_no_help_lines()
     assert(iscellstr(doc_lines));
     assert(isempty(doc_lines));
 
-
-
-    fn=[tempname() '.m'];
+    fn=write_lines_in_temp_file('',doc_lines);
     cleaner=onCleanup(@()delete(fn));
-    fid=fopen(fn,'w');
-    closer=onCleanup(@()fclose(fid));
-    fprintf(fid,'%s\n',lines{:});
-    clear closer;
 
     expressions=parseMFile(parser,fn);
     assert(iscell(expressions));
     assert(isempty(expressions));
 
 
+function test_parse_error_lines()
+    lines={' Examples:',...
+            '    disp(2)',...
+            '  indent error',...
+            '    back'};
 
-
+    parser=MOdoxDocTestParser();
+    doc_lines=getDocTestLines(parser,lines);
+    assert(ischar(doc_lines));
 
 
 
 function test_simple_expressions()
-
     parser=MOdoxDocTestParser();
 
     exprs={'p''','p''';...
@@ -74,6 +74,19 @@ function test_simple_expressions()
         assertEqual(doc_lines,exprs(k,2));
     end
 
+function test_get_lines_exceptions()
+    parser=MOdoxDocTestParser();
+    assert_returns_string=@(lines)...
+                                assertEqual('char',...
+                                    class(getDocTestLines(parser,lines)));
+    assert_returns_string({'Examples:',...
+                             '    four lines indent',...
+                             '  back to two',...
+                             '    %|| '});
+
+    assert_returns_string({'    Examples:',...
+                           '  only two',...
+                           '    %|| '});
 
 
 
@@ -201,19 +214,47 @@ function test_mfile_parser
     expressions=parseLines(parser,mfile_name,mfile_lines);
     assertExpressionsEqual(expressions,expected_expressions)
 
-    % test with getHelpLines
-    commented_lines=cellfun(@(x) ['% ' x],mfile_lines,...
-                                     'UniformOutput',false);
-
-    temp_fn=tempname();
+    temp_fn=write_lines_in_temp_file('%% ',mfile_lines);
     cleaner=onCleanup(@()delete(temp_fn));
-    fid=fopen(temp_fn,'w');
-    fprintf(fid,'%s\n',commented_lines{:});
-    fclose(fid);
 
     expressions=parseMFile(parser,temp_fn);
     assertExpressionsEqual(expressions,expected_expressions)
 
+
+function test_mfile_parser_not_parseable
+    mfile_name=randstr();
+    lines={'Examples',...
+                '   disp(2)',...
+                ' 2'};
+
+    for in_file=[false,true]
+        parser=MOdoxDocTestParser();
+
+        if in_file
+            try
+            temp_fn=write_lines_in_temp_file('%% ',lines);
+            catch
+                22
+            end
+            cleaner=onCleanup(@()delete(temp_fn));
+
+            expressions=parseMFile(parser,temp_fn);
+        else
+            expressions=parseLines(parser,mfile_name,lines);
+        end
+
+        assert(iscell(expressions))
+        assertEqual(numel(expressions),1);
+        assertEqual(class(expressions{1}),'MOdoxUnparseableExpression');
+    end
+
+
+function temp_fn=write_lines_in_temp_file(prefix_pat,lines)
+    temp_fn=[tempname() '.m'];
+    fid=fopen(temp_fn,'w');
+    cleaner=onCleanup(@()fclose(fid));
+
+    fprintf(fid,[prefix_pat '%s\n'],lines{:});
 
 
 
@@ -318,19 +359,14 @@ function assert_output_equal(expected_output,varargin)
 function test_get_test_lines_exceptions()
     parser=MOdoxDocTestParser();
 
-    aet=@(varargin)assertExceptionThrown(@()...
-                    getDocTestLines(parser,varargin{:}),'');
     bad_inputs={struct(),...
                 'foo',...
-                {'  Examples:','here'},... % bad indent
-                {'Examples:','  ok',' bad'},... % good then bad indent
-                {'Examples:',sprintf('\t  with_tab')},...
-                {'Examples:','  ok...','  ok2...',' not ok'},...
                 };
 
     for k=1:numel(bad_inputs)
         bad_input=bad_inputs{k};
-        aet(bad_input);
+        assertExceptionThrown(@()...
+                        getDocTestLines(parser,bad_input),'');
     end
 
 

@@ -11,7 +11,7 @@ function expressions=parseLines(obj,mfile_name,all_lines)
 %                           followed by one or more lines with increased
 %                           indentation (white space).
 %                           Expected output from expression starts with
-%                           the string '%>'
+%                           the string '%||'
 %
 % Output:
 %   doctest_lines           cellstring with MOdoxExpression subclasses,
@@ -27,6 +27,15 @@ function expressions=parseLines(obj,mfile_name,all_lines)
     comment_pat=translate_prefix2pat(comment_prefix);
 
     [doc_lines,doc_idxs]=getDocTestLines(obj,all_lines);
+
+    if ischar(doc_lines)
+        % unparseable expression
+        reason=doc_lines;
+        line_number=max([1,doc_idxs(find(doc_idxs,1))]);
+        location=MOdoxMFileLocation(mfile_name,line_number);
+        expressions={MOdoxUnparseableExpression(location,reason)};
+        return;
+    end
 
     % see which lines have output
     expected_output_match=regexp(doc_lines,output_pat,'tokens','once');
