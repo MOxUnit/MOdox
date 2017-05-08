@@ -79,7 +79,7 @@ function DXD__outcome_args=run_with(DXD__expressions)
                     && DXD__moxunit_isa_test_skipped_exception(...
                                                     DXD__last_error)
 
-                % Skipped test exxceptionw was raised
+                % Skipped test exxception was raised
                 % or a failed test
                 DXD__reason=DXD__last_error.message;
                 DXD__outcome_args={@MOxUnitSkippedTestOutcome,...
