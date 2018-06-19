@@ -7,7 +7,8 @@
 # available (as of April 2015)
 
 language: java
-
+dist: trusty
+sudo: required
 cache:
   - apt
 env:
