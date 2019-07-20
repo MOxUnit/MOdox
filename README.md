@@ -13,7 +13,7 @@ MOdox is documentation test ("doctest") framework for Matlab and GNU Octave.
 
 ### Dependencies
 - Working installation of [MOxUnit]. 
-- The ``evalc`` function. This functon is generally available in Matlab. Older versions of Octave without ``evalc`` can compile the ``evalc.cc`` file from in the "externals" directory. This can be done by running ``make build-octave`` from the shell, or in Octave by running ``mkoctfile('evalc.cc')`` in the ``externals`` directory and then adding that directory to the search path. The ``evalc.cc`` implementation is Copyright 2015 Oliver Heimlich, distributed under the GPL v3+ license.
+- The ``evalc`` function. This functon is generally available in Matlab, and in GNU Octave from version 4.2 onwards. Older versions of Octave without ``evalc`` can compile the ``evalc.cc`` file from in the "externals" directory. This can be done by running ``make build-octave`` from the shell, or in Octave by running ``mkoctfile('evalc.cc')`` in the ``externals`` directory and then adding that directory to the search path. The ``evalc.cc`` implementation is Copyright 2015 Oliver Heimlich, distributed under the GPL v3+ license.
 
 
 ### Installation
