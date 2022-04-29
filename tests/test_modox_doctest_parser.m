@@ -231,11 +231,7 @@ function test_mfile_parser_not_parseable
         parser=MOdoxDocTestParser();
 
         if in_file
-            try
             temp_fn=write_lines_in_temp_file('%% ',lines);
-            catch
-                22
-            end
             cleaner=onCleanup(@()delete(temp_fn));
 
             expressions=parseMFile(parser,temp_fn);

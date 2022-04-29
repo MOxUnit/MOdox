@@ -74,12 +74,12 @@ function lines=get_lines(content)
 
 
 function lines=read_lines_from_file(content)
-        if ~exist(content,'file')
-            error('file %s does not exist',content);
-        end
-        fid=fopen(content);
-        cleaner=onCleanup(@()fclose(fid));
-        lines_vec=fread(fid,'char=>char')';
-        lines=regexp(lines_vec,sprintf('\n'),'split');
+    if isempty(dir(content))
+        error('file %s does not exist',content);
+    end
+    fid=fopen(content);
+    cleaner=onCleanup(@()fclose(fid));
+    lines_vec=fread(fid,'char=>char')';
+    lines=regexp(lines_vec,sprintf('\n'),'split');
 
 
