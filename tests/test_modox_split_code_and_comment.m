@@ -29,4 +29,3 @@ function test_modox_split_code_and_comment_exceptions
                             modox_split_code_and_comment(varargin{:}),'');
     aet([]);
     aet({'2'});
-

@@ -29,7 +29,7 @@ function expressions=parseLines(obj,mfile_name,all_lines)
     [doc_lines,doc_idxs]=getDocTestLines(obj,all_lines);
 
     if ischar(doc_lines)
-        % unparseable expression
+        % unparsable expression
         reason=doc_lines;
         line_number=max([1,doc_idxs(find(doc_idxs,1))]);
         location=MOdoxMFileLocation(mfile_name,line_number);
@@ -140,9 +140,3 @@ function pat=translate_prefix2pat(prefix)
     escaped_prefix=regexptranslate('escape',prefix);
 
     pat=['^\s*' escaped_prefix '(.*)$'];
-
-
-
-
-
-

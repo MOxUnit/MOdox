@@ -21,5 +21,3 @@ function obj=MOdoxTestSuite(name)
 
     s=struct();
     obj=class(s,class_name,MOxUnitTestSuite(name));
-
-

@@ -32,4 +32,3 @@ function test_modoxunit_mfile_location_exceptions
     % non-scalar line number
     aet('foo',[]);
     aet('foo',[2 3]);
-

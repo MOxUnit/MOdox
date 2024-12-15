@@ -45,4 +45,3 @@ function suite=addFromFile(suite,fn,parser)
             end
         end
     end
-

@@ -113,6 +113,3 @@ function test_modox_expressions_exceptions()
     % wrong lines / output argument
     aet_class(location,{['foo';'bar']},prefix,output);
     aet_class(location,lines,prefix,{['foo';'bar']});
-
-
-
