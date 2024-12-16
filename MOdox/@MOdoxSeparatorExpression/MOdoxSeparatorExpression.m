@@ -3,4 +3,3 @@ function obj=MOdoxSeparatorExpression()
 
     s=struct();
     obj=class(s,'MOdoxSeparatorExpression',MOdoxExpression());
-

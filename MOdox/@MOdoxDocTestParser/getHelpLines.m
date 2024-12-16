@@ -81,5 +81,3 @@ function lines=read_lines_from_file(content)
     cleaner=onCleanup(@()fclose(fid));
     lines_vec=fread(fid,'char=>char')';
     lines=regexp(lines_vec,sprintf('\n'),'split');
-
-

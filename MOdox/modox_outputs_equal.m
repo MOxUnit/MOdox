@@ -90,7 +90,7 @@ function lines=clean_lines(lines)
     % remove repeated whitespace
     lines=regexprep(lines,'\s+',' ');
 
-    % replace ASCII character 215 (representing multiplcation sign in
+    % replace ASCII character 215 (representing multiplication sign in
     % Matlab) by the 'x' sign
     lines=regexprep(lines,char(215),'x');
 

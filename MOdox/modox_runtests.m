@@ -115,5 +115,3 @@ function fns=find_files(dir_name,add_recursively)
 
     fns=moxunit_util_find_files(dir_name,'^.*\.m$',...
                                     add_recursively);
-
-

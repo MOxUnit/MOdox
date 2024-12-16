@@ -63,7 +63,7 @@ function DXD__outcome_args=run_with(DXD__expressions)
         DXD__expression=DXD__expressions{DXD__i};
 
         if ~isValid(DXD__expression)
-            % unparseable expression
+            % unparsable expression
             DXD__reason=getReason(DXD__expression);
             DXD__outcome_args=DXD__build_error_struct(DXD__reason,...
                                             DXD__expression);
@@ -187,7 +187,3 @@ function s=concat_with_prefix(prefix,lines)
 
 function line=remove_ans_eq(line)
     line=regexprep(line,'^\s*ans\s*=','');
-
-
-
-

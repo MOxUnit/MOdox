@@ -323,7 +323,7 @@ function test_get_test_lines_trivial_cases()
     aeq({'f(''%s'')','g ',outb},...
                     {'Examples','  f(''%s'')', '  g % %',out2b,'back'});
 
-    % line contination
+    % line continuation
     aeq({sprintf('f(''%%s''...\n   g);'),[],outb},...
                     {'Examples','  f(''%s''...', '     g);',out2b,'back'});
 

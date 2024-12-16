@@ -7,7 +7,7 @@ function obj=MOdoxTestCaseExpression(location,code,output_prefix,output)
 %   location                MOdoxMFileLocation instance
 %   lines                   cellstring with matlab code
 %   output_prefix           (optional) string prefix for output
-%   output                  cellstring with expectd output
+%   output                  cellstring with expected output
 
 
     check_inputs(location,code,output_prefix,output)
