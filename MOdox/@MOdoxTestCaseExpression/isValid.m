@@ -1,4 +1,4 @@
-function tf=isValid(obj)
-% Returns true
+function tf = isValid(obj)
+    % Returns true
 
-    tf=true;
+    tf = true;

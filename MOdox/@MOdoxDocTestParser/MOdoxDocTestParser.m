@@ -1,5 +1,5 @@
-function obj=MOdoxDocTestParser()
-% Instaniate MOdoxDocTestParser object
+function obj = MOdoxDocTestParser()
+    % Instaniate MOdoxDocTestParser object
 
-    s=struct();
-    obj=class(s,'MOdoxDocTestParser');
+    s = struct();
+    obj = class(s, 'MOdoxDocTestParser');

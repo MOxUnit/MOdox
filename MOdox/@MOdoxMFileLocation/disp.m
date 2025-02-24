@@ -1,4 +1,4 @@
 function disp(obj)
-% display the object
+    % display the object
 
-    fprintf('%s\n',str(obj));
+    fprintf('%s\n', str(obj));

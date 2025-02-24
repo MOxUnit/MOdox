@@ -1,4 +1,4 @@
-function filename=getFilename(obj)
-% return filename
+function filename = getFilename(obj)
+    % return filename
 
-    filename=obj.filename;
+    filename = obj.filename;
