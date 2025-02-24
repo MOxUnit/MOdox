@@ -1,4 +1,4 @@
-function location=getLocation(obj)
-% Return location
+function location = getLocation(obj)
+    % Return location
 
-    location=obj.location;
+    location = obj.location;

@@ -1,4 +1,4 @@
-function prefix=getOutputPrefix(obj)
-% Return prefix
+function prefix = getOutputPrefix(obj)
+    % Return prefix
 
-    prefix=obj.output_prefix;
+    prefix = obj.output_prefix;

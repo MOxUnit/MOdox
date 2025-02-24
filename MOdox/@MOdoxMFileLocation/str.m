@@ -1,4 +1,4 @@
-function s=str(obj)
-% return string representation number
+function s = str(obj)
+    % return string representation number
 
-    s=sprintf('%s: %d',getFilename(obj),getLineNumber(obj));
+    s = sprintf('%s: %d', getFilename(obj), getLineNumber(obj));
