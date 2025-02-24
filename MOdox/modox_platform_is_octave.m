@@ -17,4 +17,3 @@ function tf=modox_platform_is_octave
 
     tf=logical(exist('OCTAVE_VERSION', 'builtin'));
     cached_tf=tf;
-

@@ -17,7 +17,7 @@ function [doctest_lines,doctest_idxs]=getDocTestLines(obj,doctest_lines)
 %                           with indentation removed. If no documentation
 %                           is found, then the output is an empty cell
 %                           array.
-%                           If a parsing error occured, then this is a
+%                           If a parsing error occurred, then this is a
 %                           string with the error message.
 %   doctest_idxs            the indices of the lines with doctests, i.e.
 %                           lines{doctest_idxs}==doctest_lines.
@@ -230,4 +230,3 @@ function check_inputs(obj,lines)
     if ~(iscell(lines) && all(cellfun(empty_or_string,lines)))
         error('Second input must be cell string');
     end
-
