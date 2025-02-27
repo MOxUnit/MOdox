@@ -1,4 +1,4 @@
-function tf=isEvaluable(obj)
-% Returns true
+function tf = isEvaluable(obj)
+    % Returns true
 
-    tf=true;
+    tf = true;
