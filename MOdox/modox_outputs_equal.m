@@ -85,7 +85,7 @@ function lines = clean_lines(lines)
 
     % replace ASCII character 215 (representing multiplication sign in
     % Matlab) by the 'x' sign
-    lines = regexprep(lines, char(215), 'x');
+    lines = strrep(lines, char(215), 'x');
 
     % trim at begin and end
     lines = regexprep(lines, '^\s+', '');
